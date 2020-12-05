@@ -1,4 +1,4 @@
-package io.github.claudiojuniorlanca;
+package io.github.claudiojuniorlanca.security.jwt;
 
 import io.github.claudiojuniorlanca.domain.entity.Usuario;
 import io.jsonwebtoken.Claims;
@@ -17,6 +17,10 @@ import java.util.HashMap;
 
 @Service
 public class JwtService {
+
+    /*
+        CLASSE QUE REALIZA TODA A CODIFICAÇÃO E DECODIFICAÇÃO DO TOKEN
+     */
 
     @Value("${security.jwt.expiracao}")
     private String expiracao;
