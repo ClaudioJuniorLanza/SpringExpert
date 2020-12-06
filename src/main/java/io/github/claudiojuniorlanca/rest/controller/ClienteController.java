@@ -3,6 +3,7 @@ package io.github.claudiojuniorlanca.rest.controller;
 import java.util.List;
 import java.util.Optional;
 
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -28,13 +29,19 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/clientes")
+@Api("Api de Clientes")
 public class ClienteController {
 
     @Autowired
     private Clientes clientesRepository;
 
     @GetMapping("/{id}")
-    public Cliente getClienteById(@PathVariable Integer id) {
+    @ApiOperation("Obter detalhes de um cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente encontrado"),
+            @ApiResponse(code = 200, message = "Não encontrado cliente para o ID informado")
+    })
+    public Cliente getClienteById(@PathVariable @ApiParam("ID do cliente") Integer id) {
     	
     	return clientesRepository.findById(id)
     			.orElseThrow( () -> 
