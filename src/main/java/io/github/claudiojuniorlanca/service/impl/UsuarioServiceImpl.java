@@ -2,6 +2,7 @@ package io.github.claudiojuniorlanca.service.impl;
 
 import io.github.claudiojuniorlanca.domain.entity.Usuario;
 import io.github.claudiojuniorlanca.domain.repository.UsuarioRepository;
+import io.github.claudiojuniorlanca.exception.SenhaInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,15 @@ public class UsuarioServiceImpl implements UserDetailsService {
         String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
         usuario.setSenha(senhaCriptografada);
         return usuarioRepository.save(usuario);
+    }
+
+    public UserDetails autenticar(Usuario usuario){
+        UserDetails user = loadUserByUsername(usuario.getLogin());
+        boolean senhasBatem = passwordEncoder.matches(usuario.getSenha(), user.getPassword());
+        if(senhasBatem){
+            return user;
+        }
+        throw new SenhaInvalidaException();
     }
 
     @Override

@@ -28,22 +28,22 @@ public class JwtService {
     @Value("${security.jwt.chave-assinatura}")
     private String chaveAssinatura;
 
-    private String gerarToken(Usuario usuario){
+    public String gerarToken(Usuario usuario){
         long expString = Long.valueOf(expiracao);
         LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
         Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
         Date data = Date.from(instant);
 
+        /*
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("emaildousuario", "email@email.com");
         claims.put("roles", "admin");
-
+        */
         return Jwts
                 .builder()
                 .setSubject(usuario.getLogin())
                 .setExpiration(data)
-                .setClaims(claims)
-                .signWith(SignatureAlgorithm.ES512, chaveAssinatura)
+                .signWith(SignatureAlgorithm.HS512, chaveAssinatura)
                 .compact();
     }
 
